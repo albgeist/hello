@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+    http.HandleFunc("/", noop)
     http.HandleFunc("/hello", hello)
 
     http.HandleFunc("/weather/", func(w http.ResponseWriter, r *http.Request) {
@@ -25,12 +26,16 @@ func main() {
     http.ListenAndServe(":8080", nil)
 }
 
+func noop(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("Server is running!"))
+}
+
 func hello(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("hello!"))
 }
 
 func query(city string) (weatherData, error) {
-    resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?APPID=3807a20592cf6546a396b46257dd4b19&q=" + city + "&units=metric")
+    resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?APPID=9a564a62569cb07663ec977ea87e4ff7&q=" + city + "&units=metric")
     if err != nil {
         return weatherData{}, err
     }
